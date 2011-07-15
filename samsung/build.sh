@@ -14,7 +14,6 @@ case "$DEVICE" in
     prepare) 
         cd vendor/cyanogen 
         ./get-rommanager
-        ./get-google-files
         exit
         ;;
 	captivatemtd)

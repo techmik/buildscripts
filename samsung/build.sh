@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# ARCH LINUX
+if test -e /etc/arch-release ; then
+	if which sudo >/dev/null; then
+		sudo rm -f /usr/bin/python
+		sudo ln -s /usr/bin/python2 /usr/bin/python
+	fi
+fi
+
 START=$(date +%s)
 
 DEVICE="$1"
@@ -84,3 +92,11 @@ E_SEC=$((ELAPSED - E_MIN * 60))
 printf "Elapsed: "
 [ $E_MIN != 0 ] && printf "%d min(s) " $E_MIN
 printf "%d sec(s)\n" $E_SEC
+
+# ARCH LINUX
+if test -e /etc/arch-release ; then
+	if which sudo >/dev/null; then
+		sudo rm -f /usr/bin/python
+		sudo ln -s /usr/bin/python3 /usr/bin/python
+	fi
+fi

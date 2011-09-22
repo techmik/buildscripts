@@ -35,7 +35,7 @@ case "$DEVICE" in
 		brunch=epic		
         ;;
 	epic4gtouch)
-                board=c1
+                board=c1spr
 		lunch=cyanogen_epic4gtouch-eng
 		brunch=epic4gtouch	
         ;;
@@ -50,7 +50,7 @@ case "$DEVICE" in
 		brunch=galaxys2
 		;;
 	galaxys2att)
-                board=c1
+                board=c1att
 		lunch=cyanogen_galaxys2att-eng
 		brunch=galaxys2att
 		;;

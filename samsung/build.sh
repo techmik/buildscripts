@@ -34,6 +34,11 @@ case "$DEVICE" in
 		lunch=cyanogen_epic-eng
 		brunch=epic		
         ;;
+	epic4gtouch)
+                board=c1
+		lunch=cyanogen_epic4gtouch-eng
+		brunch=epic4gtouch	
+        ;;
 	fascinate)
                 board=aries
 		lunch=cyanogen_fascinate-eng
@@ -43,6 +48,11 @@ case "$DEVICE" in
                 board=c1
 		lunch=cyanogen_galaxys2-eng
 		brunch=galaxys2
+		;;
+	galaxys2att)
+                board=c1
+		lunch=cyanogen_galaxys2att-eng
+		brunch=galaxys2att
 		;;
 	galaxysmtd)
                 board=aries

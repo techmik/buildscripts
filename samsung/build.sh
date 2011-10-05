@@ -85,7 +85,7 @@ esac
 case "$ADDITIONAL" in
 	kernel)
 		lunch ${lunch}
-		cd samsung/kernel/${board}
+		cd kernel/samsung/${board}
 		./build.sh "$DEVICE"
 		cd ../../..
 		brunch ${brunch}

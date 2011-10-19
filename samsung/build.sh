@@ -54,6 +54,11 @@ case "$DEVICE" in
 		lunch=cyanogen_galaxys2att-eng
 		brunch=galaxys2att
 		;;
+	galaxysl)
+                board=latona
+		lunch=cyanogen_galaxysl-eng
+		brunch=galaxysl
+		;;
 	galaxysmtd)
                 board=aries
 		lunch=cyanogen_galaxysmtd-eng
@@ -73,7 +78,7 @@ case "$DEVICE" in
 		echo "Usage: $0 DEVICE ADDITIONAL"
 		echo "Example: ./build.sh galaxys2 (prebuilt kernel + android)"
 		echo "Example: ./build.sh galaxys2 kernel (kernel + android)"
-		echo "Supported Devices: captivatemtd, epic, fascinate, galaxys2, galaxysmtd, galaxysbmtd, vibrantmtd"
+		echo "Supported Devices: captivatemtd, epic, epic4gtouch, fascinate, galaxys2, galaxys2att galaxysl, galaxysmtd, galaxysbmtd, vibrantmtd"
 		exit 2
 		;;
 esac

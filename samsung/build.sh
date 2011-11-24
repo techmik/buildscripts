@@ -11,39 +11,24 @@ case "$DEVICE" in
 		rm -rf ./out 
 		exit
 		;;
-    prepare) 
-        cd vendor/cyanogen 
-        ./get-rommanager
-        exit
-        ;;
 	captivatemtd)
         board=aries
-		lunch=cyanogen_captivatemtd-eng
+		lunch=teamhacksung_captivatemtd-eng
 		brunch=captivatemtd
 		;;
-	epic)
-        board=aries
-		lunch=cyanogen_epic-eng
-		brunch=epic		
-        ;;
-	fascinate)
-        board=aries
-		lunch=cyanogen_fascinate-eng
-		brunch=fascinate
-        ;;
 	galaxys2)
         board=c1
-		lunch=cyanogen_galaxys2-eng
+		lunch=teamhacksung_galaxys2-eng
 		brunch=galaxys2
 		;;
 	galaxys2att)
         board=c1att
-		lunch=cyanogen_galaxys2att-eng
+		lunch=teamhacksung_galaxys2att-eng
 		brunch=galaxys2att
 		;;
 	galaxysmtd)
         board=aries
-		lunch=cyanogen_galaxysmtd-eng
+		lunch=teamhacksung_galaxysmtd-eng
 		brunch=galaxysmtd
 		;;
 	*)
@@ -65,10 +50,12 @@ case "$ADDITIONAL" in
 		cd kernel/samsung/${board}
 		./build.sh "$DEVICE"
 		cd ../../..
-		brunch ${brunch}
+		lunch ${lunch}
+        make -j8 CC=gcc-4.4 CXX=g++-4.4
 		;;
 	*)
-		brunch ${brunch}
+		lunch ${lunch}
+        make -j8 CC=gcc-4.4 CXX=g++-4.4
 		;;
 esac
 

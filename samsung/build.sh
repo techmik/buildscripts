@@ -69,6 +69,7 @@ case "$ADDITIONAL" in
 		cd ../../..
 		lunch ${lunch}
         make -j$THREADS ${otapackage}
+        ;;
 	otapackage)
         make -j$THREADS otapackage
 		;;

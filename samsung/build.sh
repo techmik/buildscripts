@@ -4,6 +4,7 @@ START=$(date +%s)
 
 DEVICE="$1"
 ADDITIONAL="$2"
+THREADS=`cat /proc/cpuinfo | grep processor | wc -l`
 
 case "$DEVICE" in
 	clean)
@@ -51,11 +52,11 @@ case "$ADDITIONAL" in
 		./build.sh "$DEVICE"
 		cd ../../..
 		lunch ${lunch}
-        make -j8 CC=gcc-4.4 CXX=g++-4.4
+        make -j$THREADS CC=gcc-4.4 CXX=g++-4.4
 		;;
 	*)
 		lunch ${lunch}
-        make -j8 CC=gcc-4.4 CXX=g++-4.4
+        make -j$THREADS CC=gcc-4.4 CXX=g++-4.4
 		;;
 esac
 

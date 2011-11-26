@@ -17,6 +17,11 @@ case "$DEVICE" in
 		lunch=teamhacksung_captivatemtd-eng
 		brunch=captivatemtd
 		;;
+	fascinatemtd)
+        board=aries
+		lunch=teamhacksung_fascinatemtd-eng
+		brunch=fascinatemtd
+		;;
 	galaxys2)
         board=c1
 		lunch=teamhacksung_galaxys2-eng

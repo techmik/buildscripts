@@ -6,6 +6,16 @@ DEVICE="$1"
 ADDITIONAL="$2"
 THREADS=`cat /proc/cpuinfo | grep processor | wc -l`
 
+# otapackage as third argument
+case "$3" in
+	otapackage)
+        otapackage=otapackage
+		;;
+	*)
+        echo "Error: unsupported argument $3"
+        ;;
+esac
+
 case "$DEVICE" in
 	clean)
 		make clean
@@ -39,8 +49,10 @@ case "$DEVICE" in
 		;;
 	*)
 		echo "Usage: $0 DEVICE ADDITIONAL"
-		echo "Example: ./build.sh galaxys2 (prebuilt kernel + android)"
-		echo "Example: ./build.sh galaxys2 kernel (kernel + android)"
+		echo "Example: ./build.sh galaxys2"
+		echo "Example: ./build.sh galaxys2 otapackage"
+		echo "Example: ./build.sh galaxys2 kernel"
+		echo "Example: ./build.sh galaxys2 kernel otapackage"
 		echo "Supported Devices: captivatemtd, epic, fascinate, galaxys2, galaxys2att galaxysl, galaxysmtd"
 		exit 2
 		;;
@@ -48,20 +60,20 @@ esac
 
 
 . build/envsetup.sh
-
+lunch ${lunch}
 
 case "$ADDITIONAL" in
 	kernel)
-		lunch ${lunch}
 		cd kernel/samsung/${board}
 		./build.sh "$DEVICE"
 		cd ../../..
 		lunch ${lunch}
-        make -j$THREADS CC=gcc-4.4 CXX=g++-4.4
+        make -j$THREADS ${otapackage}
+	otapackage)
+        make -j$THREADS otapackage
 		;;
 	*)
-		lunch ${lunch}
-        make -j$THREADS CC=gcc-4.4 CXX=g++-4.4
+        make -j$THREADS
 		;;
 esac
 

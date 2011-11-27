@@ -47,13 +47,18 @@ case "$DEVICE" in
 		lunch=teamhacksung_galaxysmtd-eng
 		brunch=galaxysmtd
 		;;
+    galaxysbmtd)
+		board=aries
+		lunch=teamhacksung_galaxysmtd-eng
+		brunch=galaxysmtd
+		;;
 	*)
 		echo "Usage: $0 DEVICE ADDITIONAL"
 		echo "Example: ./build.sh galaxys2"
 		echo "Example: ./build.sh galaxys2 otapackage"
 		echo "Example: ./build.sh galaxys2 kernel"
 		echo "Example: ./build.sh galaxys2 kernel otapackage"
-		echo "Supported Devices: captivatemtd, epic, fascinate, galaxys2, galaxys2att galaxysl, galaxysmtd"
+		echo "Supported Devices: captivatemtd, epic, fascinate, galaxys2, galaxys2att galaxysl, galaxysmtd, galaxysbmtd"
 		exit 2
 		;;
 esac

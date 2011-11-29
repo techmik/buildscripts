@@ -1,7 +1,16 @@
 #!/bin/bash
 
-START=$(date +%s)
+# ARCH LINUX
+if [ -f /etc/arch-release ] ; then
+	echo "ARCHLINUX detected."
+	ARCHLINUX=true
+	if which sudo >/dev/null; then
+		sudo rm -f /usr/bin/python
+		sudo ln -s /usr/bin/python2 /usr/bin/python
+	fi
+fi
 
+START=$(date +%s)
 DEVICE="$1"
 ADDITIONAL="$2"
 THREADS=`cat /proc/cpuinfo | grep processor | wc -l`
@@ -9,11 +18,8 @@ THREADS=`cat /proc/cpuinfo | grep processor | wc -l`
 # otapackage as third argument
 case "$3" in
 	otapackage)
-        otapackage=otapackage
-		;;
-	*)
-        echo "Error: unsupported argument $3"
-        ;;
+	otapackage=otapackage
+	;;
 esac
 
 case "$DEVICE" in
@@ -23,31 +29,31 @@ case "$DEVICE" in
 		exit
 		;;
 	captivatemtd)
-        board=aries
+		board=aries
 		lunch=teamhacksung_captivatemtd-eng
 		brunch=captivatemtd
-		;;
+	;;
 	fascinatemtd)
-        board=aries
+		board=aries
 		lunch=teamhacksung_fascinatemtd-eng
 		brunch=fascinatemtd
 		;;
 	galaxys2)
-        board=c1
+		board=c1
 		lunch=teamhacksung_galaxys2-eng
 		brunch=galaxys2
 		;;
 	galaxys2att)
-        board=c1att
+		board=c1att
 		lunch=teamhacksung_galaxys2att-eng
 		brunch=galaxys2att
 		;;
 	galaxysmtd)
-        board=aries
+		board=aries
 		lunch=teamhacksung_galaxysmtd-eng
 		brunch=galaxysmtd
 		;;
-    galaxysbmtd)
+	galaxysbmtd)
 		board=aries
 		lunch=teamhacksung_galaxysmtd-eng
 		brunch=galaxysmtd
@@ -73,13 +79,13 @@ case "$ADDITIONAL" in
 		./build.sh "$DEVICE"
 		cd ../../..
 		lunch ${lunch}
-        make -j$THREADS ${otapackage}
-        ;;
+		make -j$THREADS ${otapackage}
+		;;
 	otapackage)
-        make -j$THREADS otapackage
+		make -j$THREADS otapackage
 		;;
 	*)
-        make -j$THREADS
+		make -j$THREADS
 		;;
 esac
 
@@ -90,3 +96,12 @@ E_SEC=$((ELAPSED - E_MIN * 60))
 printf "Elapsed: "
 [ $E_MIN != 0 ] && printf "%d min(s) " $E_MIN
 printf "%d sec(s)\n" $E_SEC
+
+# ARCH LINUX
+if ARCHLINUX==true ; then
+	echo "ARCHLINUX revert changes."
+	if which sudo >/dev/null; then
+		sudo rm -f /usr/bin/python
+		sudo ln -s /usr/bin/python3 /usr/bin/python
+	fi
+fi

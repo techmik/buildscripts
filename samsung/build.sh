@@ -55,8 +55,8 @@ case "$DEVICE" in
 		;;
 	galaxysbmtd)
 		board=aries
-		lunch=teamhacksung_galaxysmtd-eng
-		brunch=galaxysmtd
+		lunch=teamhacksung_galaxysbmtd-eng
+		brunch=galaxysbmtd
 		;;
 	*)
 		echo "Usage: $0 DEVICE ADDITIONAL"

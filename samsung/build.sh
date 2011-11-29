@@ -48,6 +48,11 @@ case "$DEVICE" in
 		lunch=teamhacksung_galaxys2att-eng
 		brunch=galaxys2att
 		;;
+	galaxynote)
+		board=galaxynote
+		lunch=teamhacksung_galaxynote-eng
+		brunch=galaxynote
+		;;
 	galaxysmtd)
 		board=aries
 		lunch=teamhacksung_galaxysmtd-eng
@@ -64,7 +69,7 @@ case "$DEVICE" in
 		echo "Example: ./build.sh galaxys2 otapackage"
 		echo "Example: ./build.sh galaxys2 kernel"
 		echo "Example: ./build.sh galaxys2 kernel otapackage"
-		echo "Supported Devices: captivatemtd, epic, fascinate, galaxys2, galaxys2att galaxysl, galaxysmtd, galaxysbmtd"
+		echo "Supported Devices: captivatemtd, epic, fascinate, galaxys2, galaxys2att, galaxynote, galaxysmtd, galaxysbmtd"
 		exit 2
 		;;
 esac
@@ -98,7 +103,7 @@ printf "Elapsed: "
 printf "%d sec(s)\n" $E_SEC
 
 # ARCH LINUX
-if ARCHLINUX==true ; then
+if [ -f /etc/arch-release ] ; then
 	echo "ARCHLINUX revert changes."
 	if which sudo >/dev/null; then
 		sudo rm -f /usr/bin/python

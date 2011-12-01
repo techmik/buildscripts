@@ -20,37 +20,37 @@ case "$DEVICE" in
 		;;
 	captivatemtd)
 		board=aries
-		lunch=teamhacksung_captivatemtd-eng
+		lunch=teamhacksung_captivatemtd-userdebug
 		brunch=captivatemtd
 	;;
 	fascinatemtd)
 		board=aries
-		lunch=teamhacksung_fascinatemtd-eng
+		lunch=teamhacksung_fascinatemtd-userdebug
 		brunch=fascinatemtd
 		;;
 	galaxys2)
 		board=c1
-		lunch=teamhacksung_galaxys2-eng
+		lunch=teamhacksung_galaxys2-userdebug
 		brunch=galaxys2
 		;;
 	galaxys2att)
 		board=c1att
-		lunch=teamhacksung_galaxys2att-eng
+		lunch=teamhacksung_galaxys2att-userdebug
 		brunch=galaxys2att
 		;;
 	galaxynote)
 		board=galaxynote
-		lunch=teamhacksung_galaxynote-eng
+		lunch=teamhacksung_galaxynote-userdebug
 		brunch=galaxynote
 		;;
 	galaxysmtd)
 		board=aries
-		lunch=teamhacksung_galaxysmtd-eng
+		lunch=teamhacksung_galaxysmtd-userdebug
 		brunch=galaxysmtd
 		;;
 	galaxysbmtd)
 		board=aries
-		lunch=teamhacksung_galaxysbmtd-eng
+		lunch=teamhacksung_galaxysbmtd-userdebug
 		brunch=galaxysbmtd
 		;;
 	*)

@@ -1,16 +1,33 @@
 #!/bin/bash
 
+# Common defines
+txtrst='\e[0m'  # Color off
+txtred='\e[0;31m' # Red
+txtgrn='\e[0;32m' # Green
+txtylw='\e[0;33m' # Yellow
+txtblu='\e[0;34m' # Blue
+
+echo -e "${txtgrn}##########################################"
+echo -e "${txtgrn}#                                        #"
+echo -e "${txtgrn}#    TEAMHACKSUNG ANDROID BUILDSCRIPT    #"
+echo -e "${txtgrn}# visit us @ http://www.teamhacksung.org #"
+echo -e "${txtgrn}#                                        #"
+echo -e "${txtgrn}##########################################"
+echo -e "\r\n ${txtrst}"
+
+# Starting Timer
 START=$(date +%s)
 DEVICE="$1"
 ADDITIONAL="$2"
 THREADS=`cat /proc/cpuinfo | grep processor | wc -l`
 
+# Device specific settings
 case "$DEVICE" in
 	clean)
 		make clean
 		rm -rf ./out/target/product
 		exit
-		;;
+		;;	
 	captivatemtd)
 		board=aries
 		lunch=cm_captivatemtd-userdebug
@@ -47,24 +64,41 @@ case "$DEVICE" in
 		brunch=cm_galaxysbmtd-userdebug
 		;;
 	*)
-		echo "Usage: $0 DEVICE ADDITIONAL"
-		echo "Example: ./build.sh galaxys2"
-		echo "Example: ./build.sh galaxys2 kernel"
-		echo "Supported Devices: captivatemtd, epic, fascinate, galaxys2, galaxys2att, galaxynote, galaxysmtd, galaxysbmtd"
+		echo -e "${txtred}Usage: $0 DEVICE ADDITIONAL"
+		echo -e "Example: ./build.sh galaxys2"
+		echo -e "Example: ./build.sh galaxys2 kernel"
+		echo -e "Supported Devices: captivatemtd, epic, fascinate, galaxys2, galaxys2att, galaxynote, galaxysmtd, galaxysbmtd${txtrst}"
 		exit 2
 		;;
 esac
 
+# Check for RomManager
+		echo -e "${txtylw}Checking for RomManager...${txtrst}"
+if [ ! -e vendor/cm/proprietary/RomManager.apk ]; then
+		echo -e "${txtred}RomManager not found, downloading now...${txtrst}"
+		cd vendor/cm
+		./get-rommanager
+		cd ../..
+else
+		echo -e "${txtgrn}RomManager found.${txtrst}"
+fi
+
+# Setting up Build Environment
+echo -e "${txtgrn}Setting up Build Environment...${txtrst}"
 . build/envsetup.sh
 
+# Start the Build
 case "$ADDITIONAL" in
 	kernel)
+		echo -e "${txtgrn}Building Kernel...${txtrst}"
 		cd kernel/samsung/${board}
 		./build.sh "$DEVICE"
 		cd ../../..
+		echo -e "${txtgrn}Building Android...${txtrst}"
 		brunch ${brunch}
 		;;
 	*)
+		echo -e "${txtgrn}Building Android...${txtrst}"
 		brunch ${brunch}
 		;;
 esac

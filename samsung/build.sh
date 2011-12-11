@@ -5,82 +5,67 @@ DEVICE="$1"
 ADDITIONAL="$2"
 THREADS=`cat /proc/cpuinfo | grep processor | wc -l`
 
-# otapackage as third argument
-case "$3" in
-	otapackage)
-	otapackage=otapackage
-	;;
-esac
-
 case "$DEVICE" in
 	clean)
 		make clean
-		rm -rf ./out 
+		rm -rf ./out/target/product
 		exit
 		;;
 	captivatemtd)
 		board=aries
-		lunch=teamhacksung_captivatemtd-userdebug
-		brunch=captivatemtd
+		lunch=cm_captivatemtd-userdebug
+		brunch=cm_captivatemtd-userdebug
 	;;
 	fascinatemtd)
 		board=aries
-		lunch=teamhacksung_fascinatemtd-userdebug
-		brunch=fascinatemtd
+		lunch=cm_fascinatemtd-userdebug
+		brunch=cm_fascinatemtd-userdebug
 		;;
 	galaxys2)
 		board=c1
-		lunch=teamhacksung_galaxys2-userdebug
-		brunch=galaxys2
+		lunch=cm_galaxys2-userdebug
+		brunch=cm_galaxys2-userdebug
 		;;
 	galaxys2att)
 		board=c1att
-		lunch=teamhacksung_galaxys2att-userdebug
-		brunch=galaxys2att
+		lunch=cm_galaxys2att-userdebug
+		brunch=cm_galaxys2att-userdebug
 		;;
 	galaxynote)
 		board=galaxynote
-		lunch=teamhacksung_galaxynote-userdebug
-		brunch=galaxynote
+		lunch=cm_galaxynote-userdebug
+		brunch=cm_galaxynote-userdebug
 		;;
 	galaxysmtd)
 		board=aries
-		lunch=teamhacksung_galaxysmtd-userdebug
-		brunch=galaxysmtd
+		lunch=cm_galaxysmtd-userdebug
+		brunch=cm_galaxysmtd-userdebug
 		;;
 	galaxysbmtd)
 		board=aries
-		lunch=teamhacksung_galaxysbmtd-userdebug
-		brunch=galaxysbmtd
+		lunch=cm_galaxysbmtd-userdebug
+		brunch=cm_galaxysbmtd-userdebug
 		;;
 	*)
 		echo "Usage: $0 DEVICE ADDITIONAL"
 		echo "Example: ./build.sh galaxys2"
-		echo "Example: ./build.sh galaxys2 otapackage"
 		echo "Example: ./build.sh galaxys2 kernel"
-		echo "Example: ./build.sh galaxys2 kernel otapackage"
 		echo "Supported Devices: captivatemtd, epic, fascinate, galaxys2, galaxys2att, galaxynote, galaxysmtd, galaxysbmtd"
 		exit 2
 		;;
 esac
 
-
 . build/envsetup.sh
-lunch ${lunch}
 
 case "$ADDITIONAL" in
 	kernel)
 		cd kernel/samsung/${board}
 		./build.sh "$DEVICE"
 		cd ../../..
-		lunch ${lunch}
-		make -j$THREADS ${otapackage}
-		;;
-	otapackage)
-		make -j$THREADS otapackage
+		brunch ${brunch}
 		;;
 	*)
-		make -j$THREADS
+		brunch ${brunch}
 		;;
 esac
 

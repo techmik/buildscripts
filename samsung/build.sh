@@ -79,8 +79,8 @@ esac
 
 # Check for Prebuilts
 		echo -e "${txtylw}Checking for Prebuilts...${txtrst}"
-if [ ! -e vendor/cm/proprietary/RomManager.apk || ! -e vendor/cm/proprietary/Term.apk || ! -e vendor/cm/proprietary/lib/armeabi/libjackpal-androidterm3.so ]; then
-		echo -e "${txtred}RomManager not found, downloading now...${txtrst}"
+if [ ! -e vendor/cm/proprietary/RomManager.apk ] || [ ! -e vendor/cm/proprietary/Term.apk ] || [ ! -e vendor/cm/proprietary/lib/armeabi/libjackpal-androidterm3.so ]; then
+		echo -e "${txtred}Prebuilts not found, downloading now...${txtrst}"
 		cd vendor/cm
 		./get-prebuilts
 		cd ../..

@@ -67,7 +67,7 @@ case "$DEVICE" in
 		board=tuna
 		lunch=cm_maguro-userdebug
 		brunch=cm_maguro-userdebug
-		;
+		;;
 	*)
 		echo -e "${txtred}Usage: $0 DEVICE ADDITIONAL"
 		echo -e "Example: ./build.sh galaxys2"

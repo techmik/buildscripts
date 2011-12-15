@@ -27,7 +27,7 @@ case "$DEVICE" in
 		make clean
 		rm -rf ./out/target/product
 		exit
-		;;	
+		;;
 	captivatemtd)
 		board=aries
 		lunch=cm_captivatemtd-userdebug
@@ -77,15 +77,15 @@ case "$DEVICE" in
 		;;
 esac
 
-# Check for RomManager
-		echo -e "${txtylw}Checking for RomManager...${txtrst}"
-if [ ! -e vendor/cm/proprietary/RomManager.apk ]; then
+# Check for Prebuilts
+		echo -e "${txtylw}Checking for Prebuilts...${txtrst}"
+if [ ! -e vendor/cm/proprietary/RomManager.apk || ! -e vendor/cm/proprietary/Term.apk || ! -e vendor/cm/proprietary/lib/armeabi/libjackpal-androidterm3.so ]; then
 		echo -e "${txtred}RomManager not found, downloading now...${txtrst}"
 		cd vendor/cm
-		./get-rommanager
+		./get-prebuilts
 		cd ../..
 else
-		echo -e "${txtgrn}RomManager found.${txtrst}"
+		echo -e "${txtgrn}Prebuilts found.${txtrst}"
 fi
 
 # Setting up Build Environment

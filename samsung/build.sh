@@ -63,11 +63,16 @@ case "$DEVICE" in
 		lunch=cm_galaxysbmtd-userdebug
 		brunch=cm_galaxysbmtd-userdebug
 		;;
+	maguro)
+		board=tuna
+		lunch=cm_maguro-userdebug
+		brunch=cm_maguro-userdebug
+		;
 	*)
 		echo -e "${txtred}Usage: $0 DEVICE ADDITIONAL"
 		echo -e "Example: ./build.sh galaxys2"
 		echo -e "Example: ./build.sh galaxys2 kernel"
-		echo -e "Supported Devices: captivatemtd, epic, fascinate, galaxys2, galaxys2att, galaxynote, galaxysmtd, galaxysbmtd${txtrst}"
+		echo -e "Supported Devices: captivatemtd, epic, fascinate, galaxys2, galaxys2att, galaxynote, galaxysmtd, galaxysbmtd, maguro${txtrst}"
 		exit 2
 		;;
 esac

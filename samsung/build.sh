@@ -91,6 +91,7 @@ fi
 # Setting up Build Environment
 echo -e "${txtgrn}Setting up Build Environment...${txtrst}"
 . build/envsetup.sh
+lunch ${lunch}
 
 # Start the Build
 case "$ADDITIONAL" in

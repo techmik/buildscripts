@@ -68,6 +68,11 @@ case "$DEVICE" in
 		lunch=cm_maguro-userdebug
 		brunch=cm_maguro-userdebug
 		;;
+	vibrantmtd)
+	    board=aries
+	    lunch=cm_vibrantmtd-userdebug
+	    brunch=cm_vibrantmtd-userdebug
+	    ;;
 	*)
 		echo -e "${txtred}Usage: $0 DEVICE ADDITIONAL"
 		echo -e "Example: ./build.sh galaxys2"

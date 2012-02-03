@@ -77,7 +77,7 @@ case "$DEVICE" in
 		echo -e "${txtred}Usage: $0 DEVICE ADDITIONAL"
 		echo -e "Example: ./build.sh galaxys2"
 		echo -e "Example: ./build.sh galaxys2 kernel"
-		echo -e "Supported Devices: captivatemtd, epic, fascinate, galaxys2, galaxys2att, galaxynote, galaxysmtd, galaxysbmtd, maguro${txtrst}"
+		echo -e "Supported Devices: captivatemtd, epic, fascinate, galaxys2, galaxys2att, galaxynote, galaxysmtd, galaxysbmtd, maguro, vibrantmtd${txtrst}"
 		exit 2
 		;;
 esac

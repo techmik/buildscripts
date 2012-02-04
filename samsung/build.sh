@@ -39,17 +39,17 @@ case "$DEVICE" in
 		brunch=cm_fascinatemtd-userdebug
 		;;
 	galaxys2)
-		board=c1
+		board=smdk4210
 		lunch=cm_galaxys2-userdebug
 		brunch=cm_galaxys2-userdebug
 		;;
 	galaxys2att)
-		board=c1att
+		board=smdk4210
 		lunch=cm_galaxys2att-userdebug
 		brunch=cm_galaxys2att-userdebug
 		;;
 	galaxynote)
-		board=galaxynote
+		board=smdk4210
 		lunch=cm_galaxynote-userdebug
 		brunch=cm_galaxynote-userdebug
 		;;

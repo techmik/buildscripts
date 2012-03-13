@@ -1,11 +1,24 @@
 #!/bin/bash
 
-# Common defines
-txtrst='\e[0m'  # Color off
-txtred='\e[0;31m' # Red
-txtgrn='\e[0;32m' # Green
-txtylw='\e[0;33m' # Yellow
-txtblu='\e[0;34m' # Blue
+# Common defines (Arch-dependent)
+case `uname -s` in
+	Darwin)
+		txtrst='\033[0m'  # Color off
+		txtred='\033[0;31m' # Red
+		txtgrn='\033[0;32m' # Green
+		txtylw='\033[0;33m' # Yellow
+		txtblu='\033[0;34m' # Blue
+		THREADS=`sysctl -an hw.logicalcpu`
+		;;
+	*)
+		txtrst='\e[0m'  # Color off
+		txtred='\e[0;31m' # Red
+		txtgrn='\e[0;32m' # Green
+		txtylw='\e[0;33m' # Yellow
+		txtblu='\e[0;34m' # Blue
+		THREADS=`cat /proc/cpuinfo | grep processor | wc -l`
+		;;
+esac
 
 echo -e "${txtgrn}##########################################"
 echo -e "${txtgrn}#                                        #"
@@ -19,7 +32,8 @@ echo -e "\r\n ${txtrst}"
 START=$(date +%s)
 DEVICE="$1"
 ADDITIONAL="$2"
-THREADS=`cat /proc/cpuinfo | grep processor | wc -l`
+#Moved to arch-dependent case above
+#THREADS=`cat /proc/cpuinfo | grep processor | wc -l`
 
 # Device specific settings
 case "$DEVICE" in

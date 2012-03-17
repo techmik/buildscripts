@@ -62,6 +62,11 @@ case "$DEVICE" in
 		lunch=cm_galaxys2att-userdebug
 		brunch=cm_galaxys2att-userdebug
 		;;
+	galaxysl)
+		board=latona
+		lunch=cm_galaxysl-userdebug
+		brunch=cm_galaxysl-userdebug
+		;;
 	galaxynote)
 		board=smdk4210
 		lunch=cm_galaxynote-userdebug

@@ -253,6 +253,11 @@ case "$COMMAND" in
 		lunch=cm_i777-userdebug
 		brunch=cm_i777-userdebug
 		;;
+	i9100g)
+		board=t1
+		lunch=cm_i9100g-userdebug
+		brunch=cm_i9100g-userdebug
+		;;
 	galaxysl)
 		board=latona
 		lunch=cm_galaxysl-userdebug

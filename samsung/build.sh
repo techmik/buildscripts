@@ -1,5 +1,195 @@
 #!/bin/bash
 
+COMMAND="$1"
+ADDITIONAL="$2"
+
+check_root() {
+    if [ ! $( id -u ) -eq 0 ]; then
+        echo "Please run this script as root."
+        exit
+    fi
+}
+
+install_sun_jdk()
+{
+    add-apt-repository "deb http://archive.canonical.com/ lucid partner"
+    apt-get update
+    apt-get install sun-java6-jdk
+}
+
+install_ubuntu_packages()
+{
+    case $arch in
+    "1")
+        # i686
+        apt-get install git-core gnupg flex bison gperf build-essential \
+        zip curl zlib1g-dev libc6-dev libncurses5-dev x11proto-core-dev \
+        libx11-dev libreadline6-dev libgl1-mesa-dev tofrodos python-markdown \
+        libxml2-utils xsltproc
+        ;;
+    "2")
+        # x86_64
+        apt-get install git-core gnupg flex bison gperf build-essential \
+        zip curl zlib1g-dev libc6-dev lib32ncurses5-dev ia32-libs \
+        x11proto-core-dev libx11-dev lib32readline5-dev lib32z-dev \
+        libgl1-mesa-dev g++-multilib mingw32 tofrodos python-markdown \
+        libxml2-utils xsltproc
+        ;;
+    *)
+        # no arch
+        echo "No arch defined, aborting."
+        exit
+        ;;
+    esac
+}
+
+install_arch_packages()
+{
+    case $arch in
+    "1")
+        # i686
+        pacman -S openjdk6 perl git gnupg flex bison gperf zip unzip sdl wxgtk \
+        squashfs-tools ncurses libpng zlib libusb libusb-compat readline
+        ;;
+    "2")
+        # x86_64
+        pacman -S openjdk6 perl git gnupg flex bison gperf zip unzip sdl wxgtk \
+        squashfs-tools ncurses libpng zlib libusb libusb-compat readline gcc-multilib
+        ;;
+    *)
+        # no arch
+        echo "No arch defined, aborting."
+        exit
+        ;;
+    esac
+}
+
+prepare_environment()
+{
+    echo "Which distribution are you running?"
+    echo "1) Ubuntu 10.04"
+    echo "2) Ubuntu 10.10"
+    echo "3) Ubuntu 11.04"
+    echo "4) Ubuntu 11.10"
+    echo "5) Ubuntu 12.04"
+    echo "6) Arch Linux"
+    read -n1 distribution
+    echo -e "\r\n"
+    
+    echo "Arch?"
+    echo "1) i686"
+    echo "2) x86_64"
+    read -n1 arch
+    echo -e "\r\n"
+
+    case $distribution in
+    "1")
+        # Ubuntu 10.04
+        echo "Installing packages for Ubuntu 10.04"
+        install_sun_jdk
+        install_ubuntu_packages
+        ;;
+    "2")
+        # Ubuntu 10.10
+        echo "Installing packages for Ubuntu 10.10"
+        install_sun_jdk
+        install_ubuntu_packages
+        ln -s /usr/lib32/mesa/libGL.so.1 /usr/lib32/mesa/libGL.so
+        ;;
+    "3")
+        # Ubuntu 11.04
+        echo "Installing packages for Ubuntu 11.04"
+        install_sun_jdk
+        install_ubuntu_packages
+        ;;
+    "4")
+        # Ubuntu 11.10
+        echo "Installing packages for Ubuntu 11.10"
+        install_sun_jdk
+        install_ubuntu_packages
+        apt-get install libx11-dev:i386
+        ;;
+    "5")
+        # Ubuntu 12.04
+        echo "Installing packages for Ubuntu 12.04"
+        apt-get update
+        apt-get install git-core gnupg flex bison gperf build-essential \
+        zip curl libc6-dev libncurses5-dev:i386 x11proto-core-dev \
+        libx11-dev:i386 libreadline6-dev:i386 libgl1-mesa-dev:i386 \
+        g++-multilib mingw32 openjdk-6-jdk tofrodos python-markdown \
+        libxml2-utils xsltproc zlib1g-dev:i386
+        ;;
+    
+    "6")
+        # Arch Linux
+        echo "Installing packages for Arch Linux"
+        install_arch_packages
+        mv /usr/bin/python /usr/bin/python.bak
+        ln -s /usr/bin/python2 /usr/bin/python
+        ;;
+        
+    *)
+        # No distribution
+        echo "No distribution set. Aborting."
+        exit
+        ;;
+    esac
+    
+    echo "Do you want us to get android sources for you? (y/n)"
+    read -n1 sources
+    echo -e "\r\n"
+
+    case $sources in
+    "Y" | "y")
+        echo "Choose a branch:"
+        echo "1) gingerbread"
+        echo "2) ics"
+        read -n1 branch
+        echo -e "\r\n"
+
+        case $branch in
+            "1")
+                # gingerbread
+                branch="gingerbread"
+                ;;
+            "2")
+                # ics
+                branch="ics"
+                ;;
+            *)
+                # no branch
+                echo "No branch choosen. Aborting."
+                exit
+                ;;
+        esac
+
+        echo "Target Directory (~/android/system):"
+        read working_directory
+
+        if [ ! -n $working_directory ]; then 
+            working_directory="~/android/system"
+        fi
+
+        echo "Installing to $working_directory"
+        mkdir ~/bin
+        export PATH=~/bin:$PATH
+        curl https://dl-ssl.google.com/dl/googlesource/git-repo/repo > ~/bin/repo
+        chmod a+x ~/bin/repo        
+        
+        mkdir -p $working_directory
+        cd $working_directory
+        repo init -u git://github.com/CyanogenMod/android.git -b $branch
+        repo sync
+        echo "Sources synced to $working_directory"        
+        exit
+        ;;
+    "N" | "n")
+        # nothing to do
+        exit
+        ;;
+    esac
+}
+
 # Common defines (Arch-dependent)
 case `uname -s` in
 	Darwin)
@@ -30,91 +220,84 @@ echo -e "\r\n ${txtrst}"
 
 # Starting Timer
 START=$(date +%s)
-DEVICE="$1"
-ADDITIONAL="$2"
 
 # Device specific settings
-case "$DEVICE" in
-	clean)
-		make clean
-		rm -rf ./out 
-		exit
-		;;
-    prepare) 
-        cd vendor/cyanogen 
-        ./get-rommanager
+case "$COMMAND" in
+    prepare)
+        check_root
+        prepare_environment
         exit
         ;;
+	clean)
+		make clean
+		rm -rf ./out/target/product
+		exit
+		;;
 	captivatemtd)
-        board=aries
-		lunch=cyanogen_captivatemtd-eng
-		brunch=captivatemtd
+		board=aries
+		lunch=cm_captivatemtd-userdebug
+		brunch=cm_captivatemtd-userdebug
+	;;
+	fascinatemtd)
+		board=aries
+		lunch=cm_fascinatemtd-userdebug
+		brunch=cm_fascinatemtd-userdebug
 		;;
-	epic)
-        board=aries
-		lunch=cyanogen_epic-eng
-		brunch=epic		
-        ;;
-	epic4gtouch)
-        board=c1spr
-		lunch=cyanogen_epic4gtouch-eng
-		brunch=epic4gtouch	
-        ;;
-	fascinate)
-        board=aries
-		lunch=cyanogen_fascinate-eng
-		brunch=fascinate
-        ;;
 	galaxys2)
-        board=c1
-		lunch=cyanogen_galaxys2-eng
-		brunch=galaxys2
+		board=smdk4210
+		lunch=cm_galaxys2-userdebug
+		brunch=cm_galaxys2-userdebug
 		;;
-	i9100g)
-        board=t1
-		lunch=cyanogen_i9100g-eng
-		brunch=i9100g
-		;;
-	galaxys2att)
-                board=c1att
-		lunch=cyanogen_galaxys2att-eng
-		brunch=galaxys2att
+	i777)
+		board=smdk4210
+		lunch=cm_i777-userdebug
+		brunch=cm_i777-userdebug
 		;;
 	galaxysl)
-        board=latona
-		lunch=cyanogen_galaxysl-eng
-		brunch=galaxysl
+		board=latona
+		lunch=cm_galaxysl-userdebug
+		brunch=cm_galaxysl-userdebug
+		;;
+	galaxynote)
+		board=smdk4210
+		lunch=cm_galaxynote-userdebug
+		brunch=cm_galaxynote-userdebug
 		;;
 	galaxysmtd)
-        board=aries
-		lunch=cyanogen_galaxysmtd-eng
-		brunch=galaxysmtd
+		board=aries
+		lunch=cm_galaxysmtd-userdebug
+		brunch=cm_galaxysmtd-userdebug
 		;;
 	galaxysbmtd)
-        board=aries
-		lunch=cyanogen_galaxysbmtd-eng
-		brunch=galaxysbmtd
+		board=aries
+		lunch=cm_galaxysbmtd-userdebug
+		brunch=cm_galaxysbmtd-userdebug
+		;;
+	maguro)
+		board=tuna
+		lunch=cm_maguro-userdebug
+		brunch=cm_maguro-userdebug
 		;;
 	vibrantmtd)
-        board=aries
-		lunch=cyanogen_vibrantmtd-eng
-		brunch=vibrantmtd
-		;;
+	    board=aries
+	    lunch=cm_vibrantmtd-userdebug
+	    brunch=cm_vibrantmtd-userdebug
+	    ;;
 	*)
-		echo "Usage: $0 DEVICE ADDITIONAL"
-		echo "Example: ./build.sh galaxys2 (prebuilt kernel + android)"
-		echo "Example: ./build.sh galaxys2 kernel (kernel + android)"
-		echo "Supported Devices: captivatemtd, epic, epic4gtouch, fascinate, galaxys2, galaxys2att galaxysl, galaxysmtd, galaxysbmtd, vibrantmtd"
+		echo -e "${txtred}Usage: $0 DEVICE ADDITIONAL"
+		echo -e "Example: ./build.sh galaxys2"
+		echo -e "Example: ./build.sh galaxys2 kernel"
+		echo -e "Supported Devices: captivatemtd, epic, fascinate, galaxys2, i777, galaxynote, galaxysmtd, galaxysbmtd, maguro, vibrantmtd${txtrst}"
 		exit 2
 		;;
 esac
 
 # Check for Prebuilts
 		echo -e "${txtylw}Checking for Prebuilts...${txtrst}"
-if [ ! -e vendor/cyanogen/proprietary/RomManager.apk ]; then
+if [ ! -e vendor/cm/proprietary/RomManager.apk ] || [ ! -e vendor/cm/proprietary/Term.apk ] || [ ! -e vendor/cm/proprietary/lib/armeabi/libjackpal-androidterm3.so ]; then
 		echo -e "${txtred}Prebuilts not found, downloading now...${txtrst}"
-		cd vendor/cyanogen
-		./get-rommanager
+		cd vendor/cm
+		./get-prebuilts
 		cd ../..
 else
 		echo -e "${txtgrn}Prebuilts found.${txtrst}"
@@ -128,15 +311,15 @@ lunch ${lunch}
 # Start the Build
 case "$ADDITIONAL" in
 	kernel)
-        echo -e "${txtgrn}Building Kernel...${txtrst}"
+		echo -e "${txtgrn}Building Kernel...${txtrst}"
 		cd kernel/samsung/${board}
-		./build.sh "$DEVICE"
+		./build.sh "$COMMAND"
 		cd ../../..
-        echo -e "${txtgrn}Building Android...${txtrst}"
+		echo -e "${txtgrn}Building Android...${txtrst}"
 		brunch ${brunch}
 		;;
 	*)
-        echo -e "${txtgrn}Building Android...${txtrst}"
+		echo -e "${txtgrn}Building Android...${txtrst}"
 		brunch ${brunch}
 		;;
 esac

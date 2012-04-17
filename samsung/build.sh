@@ -1,7 +1,6 @@
 #!/bin/bash
 
 COMMAND="$1"
-ADDITIONAL="$2"
 
 check_root() {
     if [ ! $( id -u ) -eq 0 ]; then
@@ -289,9 +288,8 @@ case "$COMMAND" in
 	    brunch=cm_vibrantmtd-userdebug
 	    ;;
 	*)
-		echo -e "${txtred}Usage: $0 DEVICE ADDITIONAL"
+		echo -e "${txtred}Usage: $0 DEVICE"
 		echo -e "Example: ./build.sh galaxys2"
-		echo -e "Example: ./build.sh galaxys2 kernel"
 		echo -e "Supported Devices: captivatemtd, epic, fascinate, galaxys2, i777, galaxynote, galaxysmtd, galaxysbmtd, maguro, vibrantmtd${txtrst}"
 		exit 2
 		;;
@@ -314,20 +312,9 @@ echo -e "${txtgrn}Setting up Build Environment...${txtrst}"
 lunch ${lunch}
 
 # Start the Build
-case "$ADDITIONAL" in
-	kernel)
-		echo -e "${txtgrn}Building Kernel...${txtrst}"
-		cd kernel/samsung/${board}
-		./build.sh "$COMMAND"
-		cd ../../..
-		echo -e "${txtgrn}Building Android...${txtrst}"
-		brunch ${brunch}
-		;;
-	*)
-		echo -e "${txtgrn}Building Android...${txtrst}"
-		brunch ${brunch}
-		;;
-esac
+echo -e "${txtgrn}Building Android...${txtrst}"
+brunch ${brunch}
+
 
 END=$(date +%s)
 ELAPSED=$((END - START))
